@@ -19,24 +19,28 @@ def main():
     # win.draw_line(l3, "green")
     # win.draw_line(l4, "blue")
 
-    c = Cell(win)
-    c.draw(100, 100, 200, 200,)
+    c1 = Cell(win)
+    c1.draw(100, 100, 200, 200)
 
-    c = Cell(win)
-    c.has_left_wall = False
-    c.draw(300, 300, 400, 400,)
+    c2 = Cell(win)
+    c2.draw(200, 100, 300, 200)
+    c2.draw_move(c1, True)
 
-    c = Cell(win)
-    c.has_bottom_wall = False
-    c.draw(500, 450, 600, 550)
+    # c = Cell(win)
+    # c.has_left_wall = False
+    # c.draw(300, 300, 400, 400,)
 
-    c = Cell(win)
-    c.has_right_wall = False
-    c.draw(420, 50, 520, 150)
+    # c = Cell(win)
+    # c.has_bottom_wall = False
+    # c.draw(500, 450, 600, 550)
 
-    c = Cell(win)
-    c.has_top_wall = False
-    c.draw(320, 150, 420, 250)
+    # c = Cell(win)
+    # c.has_right_wall = False
+    # c.draw(420, 50, 520, 150)
+
+    # c = Cell(win)
+    # c.has_top_wall = False
+    # c.draw(320, 150, 420, 250)
 
     win.wait_for_close()
 
