@@ -1,5 +1,6 @@
 from graphics import Window, Line, Point
 from cell import Cell
+from maze import Maze
 
 
 def main():
@@ -19,12 +20,12 @@ def main():
     # win.draw_line(l3, "green")
     # win.draw_line(l4, "blue")
 
-    c1 = Cell(win)
-    c1.draw(100, 100, 200, 200)
+    # c1 = Cell(win)
+    # c1.draw(100, 100, 200, 200)
 
-    c2 = Cell(win)
-    c2.draw(200, 100, 300, 200)
-    c2.draw_move(c1, True)
+    # c2 = Cell(win)
+    # c2.draw(200, 100, 300, 200)
+    # c2.draw_move(c1, True)
 
     # c = Cell(win)
     # c.has_left_wall = False
@@ -41,6 +42,8 @@ def main():
     # c = Cell(win)
     # c.has_top_wall = False
     # c.draw(320, 150, 420, 250)
+
+    maze = Maze(100, 100, 5, 6, 50, 50, win)
 
     win.wait_for_close()
 

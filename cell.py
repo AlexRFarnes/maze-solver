@@ -2,8 +2,8 @@ from graphics import Point, Line
 
 
 class Cell:
-    def __init__(self, window):
-        self._window = window
+    def __init__(self, win):
+        self._win = win
         self._x1 = None
         self._y1 = None
         self._x2 = None
@@ -14,7 +14,7 @@ class Cell:
         self.has_bottom_wall = True
 
     def draw(self, x1, y1, x2, y2):
-        if self._window is None:
+        if self._win is None:
             return
 
         self._x1 = x1
@@ -29,19 +29,19 @@ class Cell:
 
         if self.has_top_wall:
             top_wall = Line(p0, p1)
-            self._window.draw_line(top_wall)
+            self._win.draw_line(top_wall)
 
         if self.has_right_wall:
             right_wall = Line(p1, p2)
-            self._window.draw_line(right_wall)
+            self._win.draw_line(right_wall)
 
         if self.has_bottom_wall:
             bottom_wall = Line(p2, p3)
-            self._window.draw_line(bottom_wall)
+            self._win.draw_line(bottom_wall)
 
         if self.has_left_wall:
             left_wall = Line(p3, p0)
-            self._window.draw_line(left_wall)
+            self._win.draw_line(left_wall)
 
     def get_center(self, x1, y1, x2, y2):
         center_x = abs(x2 - x1) // 2 + x1
@@ -57,4 +57,4 @@ class Cell:
 
         line = Line(from_center, to_center)
 
-        self._window.draw_line(line, fill_color)
+        self._win.draw_line(line, fill_color)
