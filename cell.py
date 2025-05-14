@@ -12,6 +12,7 @@ class Cell:
         self.has_right_wall = True
         self.has_top_wall = True
         self.has_bottom_wall = True
+        self.visited = False
 
     def get_color_for_wall(self, has_wall):
         return "black" if has_wall else "white"
