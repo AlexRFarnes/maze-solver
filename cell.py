@@ -13,6 +13,9 @@ class Cell:
         self.has_top_wall = True
         self.has_bottom_wall = True
 
+    def get_color_for_wall(self, has_wall):
+        return "black" if has_wall else "white"
+
     def draw(self, x1, y1, x2, y2):
         if self.win is None:
             return
@@ -22,26 +25,30 @@ class Cell:
         self._x2 = x2
         self._y2 = y2
 
-        p0 = Point(self._x1, self._y1)
-        p1 = Point(self._x2, self._y1)
-        p2 = Point(self._x2, self._y2)
-        p3 = Point(self._x1, self._y2)
+        p0 = Point(x1, y1)
+        p1 = Point(x2, y1)
+        p2 = Point(x2, y2)
+        p3 = Point(x1, y2)
 
-        if self.has_top_wall:
-            top_wall = Line(p0, p1)
-            self.win.draw_line(top_wall)
+        top_wall = Line(p0, p1)
+        fill_color = self.get_color_for_wall(self.has_top_wall)
+        self.win.draw_line(
+            top_wall, fill_color)
 
-        if self.has_right_wall:
-            right_wall = Line(p1, p2)
-            self.win.draw_line(right_wall)
+        right_wall = Line(p1, p2)
+        fill_color = self.get_color_for_wall(self.has_right_wall)
+        self.win.draw_line(
+            right_wall, fill_color)
 
-        if self.has_bottom_wall:
-            bottom_wall = Line(p2, p3)
-            self.win.draw_line(bottom_wall)
+        bottom_wall = Line(p2, p3)
+        fill_color = self.get_color_for_wall(self.has_bottom_wall)
+        self.win.draw_line(
+            bottom_wall, fill_color)
 
-        if self.has_left_wall:
-            left_wall = Line(p3, p0)
-            self.win.draw_line(left_wall)
+        left_wall = Line(p3, p0)
+        fill_color = self.get_color_for_wall(self.has_left_wall)
+        self.win.draw_line(
+            left_wall, fill_color)
 
     def get_center(self, x1, y1, x2, y2):
         center_x = abs(x2 - x1) // 2 + x1
