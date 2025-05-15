@@ -15,67 +15,79 @@ class Maze:
         self._cells = []
 
         if seed:
-            self.seed = random.seed(seed)
+            random.seed(seed)
 
         self._create_cells()
         self._break_entrance_and_exit()
-        self._break_walls_r(4, 3)
-
-    def _break_walls_r(self, i, j):
-        self._cells[i][j].visited = True
-        self._cells[i][j].has_left_wall = False
-        self._cells[i][j].has_right_wall = False
-        self._cells[i][j].has_top_wall = False
-        self._cells[i][j].has_bottom_wall = False
-        self._draw_cell(i, j)
-        while True:
-            cells_to_visit = []
-            if i - 1 >= 0:
-                if not self._cells[i - 1][j].visited:
-                    cells_to_visit.append((i - 1, j))
-            if j - 1 >= 0:
-                if not self._cells[i][j - 1].visited:
-                    cells_to_visit.append((i, j - 1))
-            if i + 1 < self.num_cols:
-                if not self._cells[i + 1][j].visited:
-                    cells_to_visit.append((i + 1, j))
-            if j + 1 < self.num_rows:
-                if not self._cells[i][j + 1].visited:
-                    cells_to_visit.append((i, j + 1))
-
-            if len(cells_to_visit) == 0:
-                self._draw_cell(i, j)
-                return
-            new_i, new_j = random.choice(cells_to_visit)
-            print(new_i, new_j)
-
-            #  TODO
-            # Break the walls between the current cell and the chosen cell
-            # Move to the chosen cell
+        self._break_walls_r(0, 0)
 
     def _create_cells(self):
         for i in range(self.num_cols):
             self._cells.append([])
             for j in range(self.num_rows):
                 self._cells[i].append(Cell(self.win))
-
         for i in range(self.num_cols):
             for j in range(self.num_rows):
                 self._draw_cell(i, j)
 
+    def _break_walls_r(self, i, j):
+        self._cells[i][j].visited = True
+        while True:
+            cells_to_visit = []
+
+            # determine which cell(s) to visit next
+            # left
+            if i > 0 and not self._cells[i - 1][j].visited:
+                cells_to_visit.append((i - 1, j))
+            # right
+            if i < self.num_cols - 1 and not self._cells[i + 1][j].visited:
+                cells_to_visit.append((i + 1, j))
+            # up
+            if j > 0 and not self._cells[i][j - 1].visited:
+                cells_to_visit.append((i, j - 1))
+            # down
+            if j < self.num_rows - 1 and not self._cells[i][j + 1].visited:
+                cells_to_visit.append((i, j + 1))
+
+            # if there is nowhere to go from here
+            # just break out
+            if len(cells_to_visit) == 0:
+                self._draw_cell(i, j)
+                return
+
+            # randomly pick the next direction to go
+            new_i, new_j = random.choice(cells_to_visit)
+
+            # knock out walls between this cell and the next cell(s)
+            # left
+            if new_i < i:
+                self._cells[new_i][new_j].has_right_wall = False
+                self._cells[i][j].has_left_wall = False
+            # right
+            if new_i > i:
+                self._cells[new_i][new_j].has_left_wall = False
+                self._cells[i][j].has_right_wall = False
+            # up
+            if new_j < j:
+                self._cells[new_i][new_j].has_bottom_wall = False
+                self._cells[i][j].has_top_wall = False
+            # down
+            if new_j > j:
+                self._cells[new_i][new_j].has_top_wall = False
+                self._cells[i][j].has_bottom_wall = False
+
+            # recursively visit the next cells
+            self._break_walls_r(new_i, new_j)
+
     def _draw_cell(self, i, j):
         if self.win is None:
             return
-
         c = self._cells[i][j]
-
         x1 = self.x1 + i * self.cell_size_x
         y1 = self.y1 + j * self.cell_size_y
         x2 = x1 + self.cell_size_x
         y2 = y1 + self.cell_size_y
-
         c.draw(x1, y1, x2, y2)
-
         self._animate()
 
     def _break_entrance_and_exit(self):
