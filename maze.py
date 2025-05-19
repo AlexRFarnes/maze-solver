@@ -17,20 +17,26 @@ class Maze:
         if seed:
             random.seed(seed)
 
-        self._create_cells()
-        self._break_entrance_and_exit()
-        self._break_walls_r(0, 0)
+        self.__create_cells()
+        self.__break_entrance_and_exit()
+        self.__break_walls_r(0, 0)
+        self.__reset_cells_visited()
 
-    def _create_cells(self):
+    def __reset_cells_visited(self):
+        for col in self._cells:
+            for cell in col:
+                cell.visited = False
+
+    def __create_cells(self):
         for i in range(self.num_cols):
             self._cells.append([])
             for j in range(self.num_rows):
                 self._cells[i].append(Cell(self.win))
         for i in range(self.num_cols):
             for j in range(self.num_rows):
-                self._draw_cell(i, j)
+                self.__draw_cell(i, j)
 
-    def _break_walls_r(self, i, j):
+    def __break_walls_r(self, i, j):
         self._cells[i][j].visited = True
         while True:
             cells_to_visit = []
@@ -52,7 +58,7 @@ class Maze:
             # if there is nowhere to go from here
             # just break out
             if len(cells_to_visit) == 0:
-                self._draw_cell(i, j)
+                self.__draw_cell(i, j)
                 return
 
             # randomly pick the next direction to go
@@ -77,9 +83,9 @@ class Maze:
                 self._cells[i][j].has_bottom_wall = False
 
             # recursively visit the next cells
-            self._break_walls_r(new_i, new_j)
+            self.__break_walls_r(new_i, new_j)
 
-    def _draw_cell(self, i, j):
+    def __draw_cell(self, i, j):
         if self.win is None:
             return
         c = self._cells[i][j]
@@ -90,13 +96,13 @@ class Maze:
         c.draw(x1, y1, x2, y2)
         self._animate()
 
-    def _break_entrance_and_exit(self):
+    def __break_entrance_and_exit(self):
         self._cells[0][0].has_top_wall = False
-        self._draw_cell(0, 0)
+        self.__draw_cell(0, 0)
         self._cells[self.num_cols - 1][self.num_rows -
                                        1].has_bottom_wall = False
-        self._draw_cell(self.num_cols - 1, self.num_rows -
-                        1)
+        self.__draw_cell(self.num_cols - 1, self.num_rows -
+                         1)
 
     def _animate(self):
         if self.win is None:
