@@ -143,7 +143,7 @@ class Maze:
                 return True
             else:
                 self._cells[i][j].draw_move(self._cells[i][j + 1], True)
-        # ff none of the directions work out
+        # if none of the directions work out
         return False
 
     def _animate(self):
